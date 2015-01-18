@@ -18,8 +18,12 @@ $(document).ready(function(){
     // see all of user's tweets
     $('.author').on('click', function(event){
         event.preventDefault();
-        alert("YOLO");
+        var authorOnClick = $(this).text();
+        $('article').filter( function() {
+            return '@' + $(this).data('author') !== authorOnClick;
+        }).toggle();
     });
+
 });
 
 // Utility Functions
@@ -35,6 +39,7 @@ var addTweet = function(tweet) {
     var $tweetTime = $('<small class="time"></small>');
 
     $tweetAuthor.text('@'+tweet.user);
+    $tweet.data('author', tweet.user)
     $tweetTime.text(tweet.created_at);
     $tweetContent.text(tweet.message);
 
