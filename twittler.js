@@ -1,58 +1,80 @@
 
 (function(){
 
-var viewMode = 'all'
+  // default view mode is all
+  var viewMode = 'all';
 
-$(document).ready(function(){
-    initialize();
+  $(document).ready(function(){
+    initializeTweets();
     tweetListener();
-});
+  });
 
-var initialize = function(){
+  var initializeTweets = function(){
     var index = streams.home.length - 1;
     while(index >= 0){
-        var tweet = streams.home[index];
-        addTweet(tweet);
-        index -= 1;
+      var tweet = streams.home[index];
+      addTweet(tweet);
+      index -= 1;
     }
-}
+  }
 
-var addTweet = function(tweet) {
+  var tweetListener = function(){
+    var lastTweeted = streams.home[streams.home.length-1];
+    addTweet(lastTweeted);
+    setTimeout(tweetListener, Math.random() * 20000);
+  };
+
+  var addTweet = function(tweet) {
 
     var $body = $('.tweets');
 
     var $tweet = $('<article class="tweet clearfix">');
     var $tweetDetails = $('<div class="tweet-details"></div>');
-    var $tweetContent = $('<p class="tweet-content"></p>');
-    var $tweetAuthor = $('<a class="author"></a>');
+    var $tweetMessage = $('<p class="tweet-content"></p>');
+    var $username = $('<a class="author"></a>');
     var $tweetTime = $('<small class="time"></small>');
 
-    $tweetAuthor.text('@'+tweet.user);
-    $tweet.data('author', tweet.user)
+    $username.text('@'+tweet.user);
+    $tweet.data('author', tweet.user);
     $tweetTime.text(tweet.created_at);
-    $tweetContent.text(tweet.message);
-
-    $tweet.prependTo($body);
-    $tweetAuthor.appendTo($tweetDetails);
+    $tweetMessage.text(tweet.message);
+    
+    // behavior changes according to view mode
+    if (viewMode === 'all' || viewMode === $tweetAuthor.text() ){
+      // add new tweet to top
+      $tweet.prependTo($body); 
+    } else {
+      // hide new tweet if not in proper view mode
+      $tweet.prependTo($body).hide(); 
+    }
+    
+    $username.appendTo($tweetDetails);
     $tweetTime.appendTo($tweetDetails);
-    $tweetContent.appendTo($tweetDetails);
+    $tweetMessage.appendTo($tweetDetails);
+    
     $tweetDetails.appendTo($tweet);
 
-    // add on click behavior 
-    $('.author').on('click', function(event){
-        event.preventDefault();
-        var authorOnClick = $(this).text();
-        $('article').filter( function() {
-            return '@' + $(this).data('author') !== authorOnClick;
-        }).toggle();
-    });
+    // username on click behavior 
+    $username.on('click', function(){
 
+      var authorOnClick = $(this).text()
+      var clicks = $(this).data('clicks')
+      var cycle = $(this).data("clicks", !clicks);
+      var allTweets = $('.tweet')
+      var othersTweets = $('.tweet').filter( function() {
+            return '@' + $(this).data('author') !== authorOnClick;
+          });
+
+      if (clicks) {
+        viewMode = 'all'
+        allTweets.show();
+      } else {
+        viewMode = authorOnClick
+        othersTweets.hide();
+      }
+      cycle
+    });
 };
 
-var tweetListener = function(){
-    var lastTweeted = streams.home[streams.home.length-1];
-    addTweet(lastTweeted);
-    setTimeout(tweetListener, Math.random() * 20000);
-};;
 
 }());
