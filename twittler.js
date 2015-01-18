@@ -9,11 +9,25 @@ $(document).ready(function(){
     while(index >= 0){
 
 		var tweet = streams.home[index];
-        var article = '<article class="tweet clearfix"></article>'
-	    var $tweet = $(article);
+        
+	    var $tweet = $('<article class="tweet clearfix">');
+        var $tweetDetails = $('<div class="tweet-details"></div>')
+        var $tweetContent = $('<p class="tweet-content"></p>');
+        var $tweetAuthor = $('<a class="author"></a>')
+        var $tweetTime = $('<small class="time"></small>')
 
-	    $tweet.text('@' + tweet.user + ': ' + tweet.message);
-	    $tweet.appendTo($body);
+
+	    
+
+        $tweetAuthor.text('@'+tweet.user)
+        $tweetTime.text(tweet.created_at)
+        $tweetContent.text(tweet.message);
+
+        $tweet.appendTo($body);
+        $tweetAuthor.appendTo($tweetDetails)
+        $tweetTime.appendTo($tweetDetails)
+        $tweetContent.appendTo($tweetDetails)
+        $tweetDetails.appendTo($tweet)
 
 	    index -= 1
 	}
