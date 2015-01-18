@@ -1,32 +1,21 @@
 
 (function(){
 
+var viewMode = 'all'
+
 $(document).ready(function(){
+    initialize();
+    tweetListener();
+});
 
+var initialize = function(){
     var index = streams.home.length - 1;
-
-    // populate with intial tweets
     while(index >= 0){
         var tweet = streams.home[index];
         addTweet(tweet);
         index -= 1;
     }
-
-    // listen for new tweets and add them
-    tweetListener();
-
-    // see all of user's tweets
-    $('.author').on('click', function(event){
-        event.preventDefault();
-        var authorOnClick = $(this).text();
-        $('article').filter( function() {
-            return '@' + $(this).data('author') !== authorOnClick;
-        }).toggle();
-    });
-
-});
-
-// Utility Functions
+}
 
 var addTweet = function(tweet) {
 
@@ -49,12 +38,21 @@ var addTweet = function(tweet) {
     $tweetContent.appendTo($tweetDetails);
     $tweetDetails.appendTo($tweet);
 
+    // add on click behavior 
+    $('.author').on('click', function(event){
+        event.preventDefault();
+        var authorOnClick = $(this).text();
+        $('article').filter( function() {
+            return '@' + $(this).data('author') !== authorOnClick;
+        }).toggle();
+    });
+
 };
 
 var tweetListener = function(){
     var lastTweeted = streams.home[streams.home.length-1];
     addTweet(lastTweeted);
     setTimeout(tweetListener, Math.random() * 20000);
-};
+};;
 
 }());
