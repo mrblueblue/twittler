@@ -16,7 +16,10 @@ $(document).ready(function(){
     tweetListener();
 
     // see all of user's tweets
-
+    $('.author').on('click', function(event){
+        event.preventDefault();
+        alert("YOLO");
+    });
 });
 
 // Utility Functions
@@ -46,7 +49,7 @@ var addTweet = function(tweet) {
 var tweetListener = function(){
     var lastTweeted = streams.home[streams.home.length-1];
     addTweet(lastTweeted);
-    setTimeout(tweetListener, Math.random() * 5000);
+    setTimeout(tweetListener, Math.random() * 20000);
 };
 
 }());
