@@ -5,13 +5,18 @@ $(document).ready(function(){
 
     var index = streams.home.length - 1;
 
+    // populate with intial tweets
     while(index >= 0){
         var tweet = streams.home[index];
         addTweet(tweet);
         index -= 1;
     }
 
-   tweetListener();
+    // listen for new tweets and add them
+    tweetListener();
+
+    // see all of user's tweets
+
 });
 
 // Utility Functions
@@ -30,7 +35,7 @@ var addTweet = function(tweet) {
     $tweetTime.text(tweet.created_at);
     $tweetContent.text(tweet.message);
 
-    $tweet.appendTo($body);
+    $tweet.prependTo($body);
     $tweetAuthor.appendTo($tweetDetails);
     $tweetTime.appendTo($tweetDetails);
     $tweetContent.appendTo($tweetDetails);
@@ -43,9 +48,5 @@ var tweetListener = function(){
     addTweet(lastTweeted);
     setTimeout(tweetListener, Math.random() * 5000);
 };
-
-
-
-
 
 }());
