@@ -34,6 +34,13 @@
     var $username = $('<a class="author"></a>');
     var $tweetTime = $('<small class="time"></small>');
 
+    var $avatar = {
+      shawndrost : $("<a class='avatar'><img src='img/shawndrost.jpeg'</a>"),
+      sharksforcheap : $("<a class='avatar'><img src='img/sharksforcheap.jpg'</a>"),
+      mracus : $("<a class='avatar'><img src='img/mracus.png'</a>"),
+      douglascalhoun :$("<a class='avatar'><img src='img/douglascalhoun.jpg'</a>")
+    }
+
     $username.text('@'+tweet.user);
     $tweet.data('author', tweet.user);
     $tweetTime.text(tweet.created_at);
@@ -48,6 +55,7 @@
       $tweet.prependTo($body).hide(); 
     }
     
+    $avatar[tweet.user].appendTo($tweet);
     $username.appendTo($tweetDetails);
     $tweetTime.appendTo($tweetDetails);
     $tweetMessage.appendTo($tweetDetails);
