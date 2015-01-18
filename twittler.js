@@ -4,10 +4,7 @@
   // default view mode is all
   var viewMode = 'all';
 
-  $(document).ready(function(){
-    initializeTweets();
-    tweetListener();
-  });
+  var $stream= $('.tweets');
 
   var initializeTweets = function(){
     var index = streams.home.length - 1;
@@ -26,8 +23,6 @@
 
   var addTweet = function(tweet) {
 
-    var $body = $('.tweets');
-
     var $tweet = $('<article class="tweet clearfix">');
     var $tweetDetails = $('<div class="tweet-details"></div>');
     var $tweetMessage = $('<p class="tweet-content"></p>');
@@ -41,33 +36,28 @@
       douglascalhoun :$("<a class='avatar'><img src='img/douglascalhoun.jpg'</a>")
     }
 
-    $username.text('@'+tweet.user);
-    $tweet.data('author', tweet.user);
-    $tweetTime.text(tweet.created_at);
-    $tweetMessage.text(tweet.message);
-    
-    // behavior changes according to view mode
-    if (viewMode === 'all' || viewMode === $tweetAuthor.text() ){
-      // add new tweet to top
-      $tweet.prependTo($body); 
+    if (viewMode === 'all' || viewMode === $username.text() ){
+      $tweet.prependTo($stream); 
     } else {
-      // hide new tweet if not in proper view mode
-      $tweet.prependTo($body).hide(); 
+      $tweet.prependTo($stream).hide(); 
     }
-    
-    $avatar[tweet.user].appendTo($tweet);
-    $username.appendTo($tweetDetails);
-    $tweetTime.appendTo($tweetDetails);
-    $tweetMessage.appendTo($tweetDetails);
-    
-    $tweetDetails.appendTo($tweet);
+   
+   $tweet
+      .data('author', tweet.user)
+      .append($avatar[tweet.user])
+      .append($tweetDetails);
 
-    // username on click behavior 
+    $tweetDetails
+      .append($username.text('@'+tweet.user))
+      .append($tweetTime.text(tweet.created_at.getHours()))
+      .append($tweetMessage.text(tweet.message))
+
+ 
     $username.on('click', function(){
 
       var authorOnClick = $(this).text()
       var clicks = $(this).data('clicks')
-      var cycle = $(this).data("clicks", !clicks);
+      var setClick = $(this).data("clicks", !clicks);
       var allTweets = $('.tweet')
       var othersTweets = $('.tweet').filter( function() {
             return '@' + $(this).data('author') !== authorOnClick;
@@ -80,9 +70,15 @@
         viewMode = authorOnClick
         othersTweets.hide();
       }
-      cycle
-    });
-};
 
+      setClick
+    });
+  };
+
+$(document).ready(function(){
+    initializeTweets();
+    tweetListener();
+  });
 
 }());
+
