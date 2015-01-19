@@ -1,6 +1,8 @@
 
 var Twittle = (function () {
 
+
+  // Private variables for toggling view
   var viewMode = 'all';
 
   var viewToggle = {
@@ -10,27 +12,35 @@ var Twittle = (function () {
     douglascalhoun : 0 
   }
 
-  // Populates stream with generated tweets
+  // Populates stream with intial generated twittles
   var twittlerInitializer = function() {
     var index = streams.home.length - 1;
     while(index >= 0){
       var twittle = streams.home[index];
-      twittleMaker(twittle);
+      addToStream(twittle)
       index -= 1;
     }
   }
 
-  // Listens for newly genereated tweets and adds them to stream
+  // Listens and adds to stream newly genereated twittles
   var twittleListener = function (){
     var lastGeneratedTweet = streams.home[streams.home.length-1];
-    twittleMaker(lastGeneratedTweet);
+    addToStream(lastGeneratedTweet);
     setTimeout(twittleListener, Math.random() * 20000);
   };
 
-  // Takes a generated tweet and makes it into a twittle and then adds to stream
-  var twittleMaker = function(tweet) {
+  // Adds a twittle to the stream
+  var addToStream = function(twittle){
+   var $stream = $('.tweets');  
+   if ( viewMode === 'all' || viewMode === $author.text() ){
+      twittleMaker(twittle).prependTo($stream); 
+    } else {
+      twittleMaker(twittle).prependTo($stream).hide(); 
+    }
+ }
 
-    var $stream = $('.tweets');  
+  // Manufactures twittle HTML
+  var twittleMaker = function(tweet) {
 
     var $twittle = $('<article>',{
       class: 'tweet clearfix', 
@@ -75,15 +85,8 @@ var Twittle = (function () {
         .append($author)
         .append($timeStamp)
         .append($message);
- 
-    // Adds to stream as hidden or showing depending on view mode
-    if ( viewMode === 'all' || viewMode === $author.text() ){
-      $twittle.prependTo($stream); 
-    } else {
-      $twittle.prependTo($stream).hide(); 
-    }
 
-    console.log($twittle)
+    return $twittle
   };
 
   // Toggles view mode on click
@@ -108,7 +111,7 @@ var Twittle = (function () {
   // Makes time-stamp human-friendly
   var makeFriendlyTime = function(time){};
 
-  // Public methods
+  // Returns public methods
   return { intialize : twittlerInitializer,
             listen : twittleListener}
 
