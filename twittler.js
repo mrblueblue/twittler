@@ -32,37 +32,71 @@ var Twittle = (function () {
 
     var $stream = $('.tweets');  
 
-    var $twittle = $('<article>').attr({'class':'tweet clearfix', 'data-author':tweet.user})
-      var $details = $('<div class="tweet-details"></div>');
-        var $message = $('<p>').attr({'class':'tweet-content'}).text(tweet.message)
-        var $author = $('<a>').attr({'class':'author', 'data-author':tweet.user}).text('@'+tweet.user) 
-        var $timeStamp = $('<small class="time"></small>').text(tweet.created_at.getHours());
+    var $twittle = $('<article>',{
+      class: 'tweet clearfix', 
+      'data-author': tweet.user
+    });
 
-      var $avatar = {
-        shawndrost : $("<a class='avatar' data-author='shawndrost'><img src='img/shawndrost.jpeg'></a>"),
-        sharksforcheap : $("<a class='avatar' data-author='sharksforcheap'><img src='img/sharksforcheap.jpg'></a>"),
-        mracus : $("<a class='avatar' data-author='mracus'><img src='img/mracus.png'></a>"),
-        douglascalhoun :$("<a class='avatar' data-author='douglascalhoun'><img src='img/douglascalhoun.jpg'></a>")
+    var $details = $('<div>',{
+      class: "tweet-details"
+    });
+
+    var $message = $('<p>',{
+      class: 'tweet-content', 
+      text: tweet.message
+    });
+
+    var $author = $('<a>',{
+      class: 'author', 
+      'data-author': tweet.user,
+      text: '@'+tweet.user,
+      click: toggleViewMode
+    });
+
+    var $timeStamp = $('<small>',{
+      class: 'time',
+      text: tweet.created_at.getHours()
+    });
+
+    var $avatars = {}
+
+    // Avatar HTML template
+    var getAvatars = function(){
+      var avatars = {
+          shawndrost : 'img/shawndrost.jpeg',
+          sharksforcheap : 'img/sharksforcheap.jpg',
+          mracus : 'img/mracus.png',
+          douglascalhoun : 'img/douglascalhoun.jpg'
+        }
+      for (key in avatars) {
+        $avatars[key] = $('<a>',{
+          class: 'avatar',
+          click: toggleViewMode,
+          'data-author': key,
+          html: $('<img>', {
+            src: avatars[key]
+          })
+        })
       }
-   
+  }();
+
    $twittle
-      .append($avatar[tweet.user])
+      .append($avatars[tweet.user])
       .append($details);
 
       $details
         .append($author)
         .append($timeStamp)
-        .append($message)
+        .append($message);
  
-    $author.on('click', toggleViewMode)
-    $('.avatar').on('click', toggleViewMode);
-
     // Adds to stream as hidden or showing depending on view mode
     if ( viewMode === 'all' || viewMode === $author.text() ){
       $twittle.prependTo($stream); 
     } else {
       $twittle.prependTo($stream).hide(); 
     }
+
+    console.log($twittle)
   };
 
   // Toggles view mode on click
