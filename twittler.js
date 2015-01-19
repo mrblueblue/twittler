@@ -58,30 +58,17 @@ var Twittle = (function () {
       text: tweet.created_at.getHours()
     });
 
-    var $avatars = {}
-
-    // Avatar HTML template
-    var getAvatars = function(){
-      var avatars = {
-          shawndrost : 'img/shawndrost.jpeg',
-          sharksforcheap : 'img/sharksforcheap.jpg',
-          mracus : 'img/mracus.png',
-          douglascalhoun : 'img/douglascalhoun.jpg'
-        }
-      for (key in avatars) {
-        $avatars[key] = $('<a>',{
-          class: 'avatar',
-          click: toggleViewMode,
-          'data-author': key,
-          html: $('<img>', {
-            src: avatars[key]
-          })
-        })
-      }
-  }();
+    var $avatar = $('<a>',{
+      class: 'avatar',
+      click: toggleViewMode,
+      'data-author': tweet.user,
+      html: $('<img>', {
+        src: avatars[tweet.user]
+      })
+    });
 
    $twittle
-      .append($avatars[tweet.user])
+      .append($avatar)
       .append($details);
 
       $details
