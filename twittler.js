@@ -1,6 +1,5 @@
 
-var Twittle = (function () {
-
+var Twittler = (function () {
 
   // Private variables for toggling view
   var viewMode = 'all';
@@ -10,7 +9,7 @@ var Twittle = (function () {
     sharksforcheap : 0,
     mracus : 0,
     douglascalhoun : 0 
-  }
+  };
 
   // Populates stream with intial generated twittles
   var twittlerInitializer = function() {
@@ -20,7 +19,7 @@ var Twittle = (function () {
       addToStream(twittle)
       index -= 1;
     }
-  }
+  };
 
   // Listens and adds to stream newly genereated twittles
   var twittleListener = function (){
@@ -37,9 +36,9 @@ var Twittle = (function () {
     } else {
       twittleMaker(twittle).prependTo($stream).hide(); 
     }
- }
+  };
 
-  // Manufactures twittle HTML
+  // Manufactures HTML for twittles
   var twittleMaker = function(tweet) {
 
     var $twittle = $('<article>',{
@@ -86,7 +85,7 @@ var Twittle = (function () {
         .append($timeStamp)
         .append($message);
 
-    return $twittle
+    return $twittle;
   };
 
   // Toggles view mode on click
@@ -118,6 +117,6 @@ var Twittle = (function () {
 })();
 
 $(document).ready(function(){
-    Twittle.intialize();
-    Twittle.listen();
+    Twittler.intialize();
+    Twittler.listen();
   });
