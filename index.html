@@ -3,23 +3,28 @@
 <html>
   <head>
     <title>Twittler</title>
-    <link href="twittler.css" rel="stylesheet" type="text/css">
+    <link href="css/twittler.css" rel="stylesheet" type="text/css">
   </head>
   <body>
 
     <form class="tweetbox clearfix">
-      <textarea name="tweet-content" placeholder="Compose new Tweet..."></textarea>
-      <input type="submit" value="Tweet">
+    <!--New Twittles can be created here-->
+      <textarea name="tweet-content" placeholder="This doesn't work yet..."></textarea>
+      <input type="submit" value="Twittle">
       <div class="tweet-counter"></div>
     </form>
 
     <section class="tweets">
-    <!--New Tweets are populated here-->
+    <!--New Twittles are populated here-->
     </section>
 
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-    <script src="twittler.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/livestamp.js"></script>
+    <script src="js/data_generator.js"></script>
+
+    <!--Here is the Javascript I wrote-->
+    <script src="js/twittler.js"></script>
   </body>
 </html>
 

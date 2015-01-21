@@ -64,7 +64,7 @@ var Twittler = (function () {
 
     var $timeStamp = $('<small>',{
       class: 'time',
-      text: tweet.created_at.getHours()
+      'data-livestamp': tweet.created_at
     });
 
     var $avatar = $('<a>',{
@@ -106,9 +106,6 @@ var Twittler = (function () {
       notAuthor.hide();
     }
   };
-
-  // Makes time-stamp human-friendly
-  var makeFriendlyTime = function(time){};
 
   // Returns public methods
   return { intialize : twittlerInitializer,
